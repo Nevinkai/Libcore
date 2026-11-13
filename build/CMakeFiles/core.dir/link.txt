@@ -1,2 +1,0 @@
-/bin/llvm-ar qc libcore.a CMakeFiles/core.dir/src/vec.c.o CMakeFiles/core.dir/src/str.c.o
-/bin/llvm-ranlib libcore.a

@@ -1,1 +1,0 @@
-/bin/cc -g -fsanitize=address,undefined -Xlinker --dependency-file=CMakeFiles/wordfreq.dir/link.d CMakeFiles/wordfreq.dir/examples/wordfreq.c.o -o wordfreq  libcore.a

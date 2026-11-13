@@ -1,6 +1,0 @@
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/core.dir
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/tests.dir
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/wordfreq.dir
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/test.dir
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/edit_cache.dir
-/home/nevinkai/SoftwareDevelopment/C/libcore/build/CMakeFiles/rebuild_cache.dir
