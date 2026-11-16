@@ -40,7 +40,6 @@ static int vec_allocate_data(vec *v) {
     }
 
     v->data = temp;
-    v->cap = 1;
     return 0;
 }
 
