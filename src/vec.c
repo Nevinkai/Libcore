@@ -215,11 +215,12 @@ int vec_remove(vec *v, size_t i, void *out) {
     unsigned char *bytes = v->data;
     unsigned char *source = bytes + i * v->elem_size;
 
+    v->len -= 1;
+
     // Copy element to pointer, then elements to the right to the left by one
     memcpy(out, source, v->elem_size);
     memmove(source, source + v->elem_size, (v->len - i) * v->elem_size);
 
-    v->len -= 1;
     return 0;
 }
 
