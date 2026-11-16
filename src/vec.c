@@ -100,7 +100,7 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
     vectemp->cap = cap;
     vectemp->elem_size = elem_size;
 
-    int error_code = vec_ensure_room(vectemp->data);
+    int error_code = vec_ensure_room(vectemp);
     if (error_code == -1) {
         return NULL;
     }
