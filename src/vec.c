@@ -92,7 +92,7 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
     }
 
     // Check for overflow
-    if (cap > SIZE_MAX / sizeof(elem_size)) {
+    if (cap > SIZE_MAX / elem_size) {
         return NULL;
     }
 
