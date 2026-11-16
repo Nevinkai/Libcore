@@ -303,7 +303,7 @@ long vec_find(const vec *v, const void *elem, int (*cmp)(const void *, const voi
     /* index, or -1 */
     for (size_t i = 0; i < v->len; i++) {
         int result = cmp(elem, v->data + i * v->elem_size);
-        if (result != 0) {
+        if (result == 0) {
             return (long) i;
         }
     }
