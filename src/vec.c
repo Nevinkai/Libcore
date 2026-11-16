@@ -82,7 +82,7 @@ vec *vec_new(size_t elem_size) {
     // Assign default values
     vectemp->data = NULL;
     vectemp->len = 0;
-    vectemp->cap = 1; //
+    vectemp->cap = 0; //
     vectemp->elem_size = elem_size;
 
     return vectemp;
