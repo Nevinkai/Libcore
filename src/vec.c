@@ -15,6 +15,7 @@
 
 /* Helper Functions */
 static int vec_change_cap(vec *v, size_t new_cap) {
+    // Overflow check
     if (new_cap > SIZE_MAX / v->elem_size) {
         return -1;
     }
@@ -33,6 +34,11 @@ static int vec_change_cap(vec *v, size_t new_cap) {
 }
 
 static int vec_allocate_data(vec *v) {
+    // Overflow check
+    if (v->cap > SIZE_MAX / v->elem_size) {
+        return -1;
+    }
+
     // Null check
     void *temp = malloc(v->elem_size * v->cap);
     if (!temp) {
