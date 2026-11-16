@@ -98,6 +98,7 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
 
     // Check for overflow
     if (cap > SIZE_MAX / elem_size) {
+        free(vectemp);
         return NULL;
     }
 
@@ -109,6 +110,7 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
 
     int error_code = vec_ensure_room(vectemp);
     if (error_code == -1) {
+        free(vectemp);
         return NULL;
     }
 
