@@ -10,7 +10,7 @@
 #include <string.h>
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define CAPMULTIPLER 3
+#define CAPMULTIPLIER 2
 #define BUF 256
 
 /* Helper Functions */
@@ -53,7 +53,7 @@ static int vec_ensure_room(vec *v) {
     }
 
     if (v->len == v->cap) {
-        int errorCode = vec_change_cap(v, v->cap * CAPMULTIPLER);
+        int errorCode = vec_change_cap(v, v->cap * CAPMULTIPLIER);
         if (errorCode) {
             return -1;
         }
