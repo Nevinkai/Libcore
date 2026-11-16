@@ -109,6 +109,11 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
 }
 
 void vec_free(vec *v) {
+    // Check for null
+    if (!v) {
+        return;
+    }
+
     free(v->data);
     free(v);
 }
