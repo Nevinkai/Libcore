@@ -22,6 +22,8 @@ static int vec_change_cap(vec *v, size_t new_cap) {
     // Null check
     void *temp = realloc(v->data, v->elem_size * new_cap);
     if (!temp) {
+        free(v->data);
+        v->data = NULL;
         return -1;
     }
 
