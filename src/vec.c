@@ -128,6 +128,11 @@ vec *vec_new(size_t elem_size) {
         return NULL;
     }
 
+    // Check if elem_size is 0, to prevent program from crashing later
+    if (elem_size == 0) {
+        return NULL;
+    }
+
     // Assign default values
     vectemp->data = NULL;
     vectemp->len = 0;
@@ -296,7 +301,6 @@ void vec_swap(vec *v, size_t i, size_t j) {
     unsigned char *ptr2 = bytes + j * v->elem_size;
 
     swap_any(ptr1, ptr2, v->elem_size);
-
 }
 
 /* len = 0, keeps capacity */
