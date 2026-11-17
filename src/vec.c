@@ -290,11 +290,16 @@ void vec_clear(vec *v) {
 /* ensure room for len + additional */
 int vec_reserve(vec *v, size_t additional) {
     // Don't resize if sum of additional and len is less than or equal to vector cap
-    if (v->len + additional <= v->cap) {
+    // if (v->len + additional <= v->cap) {
+    //     return 0;
+    // }
+
+    // Possible fix
+    if (v->len >= v->cap - additional) {
         return 0;
     }
 
-    // ralloc
+    // realloc
     int error_code = vec_change_cap(v, v->len + additional);
     if (error_code == -1) {
         return -1;
