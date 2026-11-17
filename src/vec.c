@@ -78,6 +78,46 @@ static int vec_ensure_room(vec *v) {
     return 0;
 }
 
+static void swap_any(void *a, void *b, size_t size) {
+    unsigned char *ptr1 = a;
+    unsigned char *ptr2 = b;
+
+    // Check memory addresses to see if they are the same variable
+    if (ptr1 == ptr2) {
+        return;
+    }
+
+    // Catch illegal sizes
+    if (size == 0) return;
+
+    // Create buffer, and store size in another variable
+    unsigned char temp[BUF];
+    size_t remaining = size;
+
+    // size_t chunkSize = MIN(remaining, BUF);
+
+    while (true) {
+        // Check which size is smaller, the buffer or the remaining bytes
+
+        size_t chunkSize = MIN(remaining, BUF);
+
+        // Copy memory one buffer chunk at a time
+        memcpy(temp, ptr1, chunkSize);
+        memcpy(ptr1, ptr2, chunkSize);
+        memcpy(ptr2, temp, chunkSize);
+
+        // If remaining is less than BUF, then the loop is done
+        if (remaining <= BUF) {
+            break;
+        }
+
+        // Track amount of iterations, and subtract the buffer amount from remaining, so the program does not repeat bytes
+        ptr1 += chunkSize;
+        ptr2 += chunkSize;
+        remaining -= BUF;
+    }
+}
+
 /* Lifecycle */
 
 vec *vec_new(size_t elem_size) {
@@ -233,7 +273,7 @@ int vec_insert(vec *v, size_t i, const void *elem) {
 
 /* shifts later items left */
 int vec_remove(vec *v, size_t i, void *out) {
-    assert(i <= v->len);
+    assert(i < v->len);
 
     unsigned char *bytes = v->data;
     unsigned char *source = bytes + i * v->elem_size;
@@ -255,35 +295,8 @@ void vec_swap(vec *v, size_t i, size_t j) {
     unsigned char *ptr1 = bytes + i * v->elem_size;
     unsigned char *ptr2 = bytes + j * v->elem_size;
 
-    // Check if pointers are the same
-    if (ptr1 == ptr2) {
-        return;
-    }
+    swap_any(ptr1, ptr2, v->elem_size);
 
-    // Create buffer, and store size in another variable
-    unsigned char temp[BUF];
-    size_t remaining = v->elem_size;
-
-    while (true) {
-        // Check which size is smaller, the buffer or the remaining bytes
-
-        size_t chunkSize = MIN(remaining, BUF);
-
-        // Copy memory one buffer chunk at a time
-        memcpy(temp, ptr1, chunkSize);
-        memcpy(ptr1, ptr2, chunkSize);
-        memcpy(ptr2, temp, chunkSize);
-
-        // If remaining is less than BUF, then the loop is done
-        if (remaining <= BUF) {
-            break;
-        }
-
-        // Track amount of iterations, and subtract the buffer amount from remaining, so the program does not repeat bytes
-        ptr1 += chunkSize;
-        ptr2 += chunkSize;
-        remaining -= BUF;
-    }
 }
 
 /* len = 0, keeps capacity */
