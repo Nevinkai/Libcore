@@ -255,6 +255,11 @@ void vec_swap(vec *v, size_t i, size_t j) {
     unsigned char *ptr1 = bytes + i * v->elem_size;
     unsigned char *ptr2 = bytes + j * v->elem_size;
 
+    // Check if pointers are the same
+    if (ptr1 == ptr2) {
+        return;
+    }
+
     // Create buffer, and store size in another variable
     unsigned char temp[BUF];
     size_t remaining = v->elem_size;
