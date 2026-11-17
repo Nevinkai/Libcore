@@ -351,6 +351,11 @@ int vec_shrink_to_fit(vec *v) {
 /* Algorithms */
 /* may use qsort */
 void vec_sort(vec *v, int (*cmp)(const void *, const void *)) {
+    // Check if vector is empty to prevent undefined behavior
+    if (v->len == 0) {
+        return;
+    }
+
     qsort(v->data, v->len, v->elem_size, cmp);
 }
 
