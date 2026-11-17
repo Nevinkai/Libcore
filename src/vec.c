@@ -285,6 +285,11 @@ int vec_remove(vec *v, size_t i, void *out) {
 
     v->len -= 1;
 
+    // Don't copy any bytes if out is null
+    if (out == NULL) {
+        return 0;
+    }
+
     // Copy element to pointer, then elements to the right to the left by one
     memcpy(out, source, v->elem_size);
     memmove(source, source + v->elem_size, (v->len - i) * v->elem_size);
