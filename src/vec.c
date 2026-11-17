@@ -148,6 +148,11 @@ vec *vec_new(size_t elem_size) {
 }
 
 vec *vec_with_capacity(size_t elem_size, size_t cap) {
+    // Check if elem_size is 0, to prevent program from crashing later
+    if (elem_size == 0) {
+        return NULL;
+    }
+
     vec *vectemp = malloc(sizeof(vec));
 
     // Check for null
