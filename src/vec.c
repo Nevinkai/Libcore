@@ -60,7 +60,16 @@ static int vec_ensure_room(vec *v) {
     }
 
     if (v->len == v->cap) {
-        int errorCode = vec_change_cap(v, v->cap * CAPMULTIPLIER);
+        size_t newCap;
+
+        // Check if cap is 0, then set it to 1 if it is zero
+        if (v->cap == 0) {
+            newCap = 1;
+        } else {
+            newCap = v->cap * CAPMULTIPLIER;
+        }
+
+        int errorCode = vec_change_cap(v, newCap);
         if (errorCode) {
             return -1;
         }
