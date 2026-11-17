@@ -126,15 +126,15 @@ static void swap_any(void *a, void *b, size_t size) {
 /* Lifecycle */
 
 vec *vec_new(size_t elem_size) {
+    // Check if elem_size is 0, to prevent program from crashing later
+    if (elem_size == 0) {
+        return NULL;
+    }
+
     vec *vectemp = malloc(sizeof(vec));
 
     // Check for null
     if (!vectemp) {
-        return NULL;
-    }
-
-    // Check if elem_size is 0, to prevent program from crashing later
-    if (elem_size == 0) {
         return NULL;
     }
 
