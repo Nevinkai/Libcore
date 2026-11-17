@@ -20,6 +20,11 @@ static int vec_change_cap(vec *v, size_t new_cap) {
         return -1;
     }
 
+    // Cap size 0 check, prevent null pointers
+    if (new_cap == 0) {
+        return -1;
+    }
+
     // Null check
     void *temp = realloc(v->data, v->elem_size * new_cap);
     if (!temp) {
