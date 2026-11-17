@@ -354,11 +354,12 @@ void vec_sort(vec *v, int (*cmp)(const void *, const void *)) {
     qsort(v->data, v->len, v->elem_size, cmp);
 }
 
-
 long vec_find(const vec *v, const void *elem, int (*cmp)(const void *, const void *)) {
+    char *bytes = v->data;
+
     /* index, or -1 */
     for (size_t i = 0; i < v->len; i++) {
-        int result = cmp(elem, v->data + i * v->elem_size);
+        int result = cmp(elem, bytes + i * v->elem_size);
         if (result == 0) {
             return (long) i;
         }
