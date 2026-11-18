@@ -20,9 +20,12 @@ static int vec_change_cap(vec *v, size_t new_cap) {
         return -1;
     }
 
-    // Cap size 0 check, prevent null pointers
+    // Cap size 0 check, empty vector and prevent null pointers
     if (new_cap == 0) {
-        return -1;
+        v->data = NULL;
+        v->len = 0;
+        v->cap = 0;
+        return 0;
     }
 
     // Null check
@@ -36,48 +39,18 @@ static int vec_change_cap(vec *v, size_t new_cap) {
     return 0;
 }
 
-static int vec_allocate_data(vec *v) {
-    // Overflow check
-    if (v->cap > SIZE_MAX / v->elem_size) {
-        return -1;
-    }
-
-    // Null check
-    void *temp = malloc(v->elem_size * v->cap);
-    if (!temp) {
-        return -1; // Failed to get new pointer
-    }
-
-    v->data = temp;
-    return 0;
-}
-
 static int vec_ensure_room(vec *v) {
-    // Assign data pointer if its null
-    if (!v->data) {
-        int errorCode = vec_allocate_data(v);
-
-        if (errorCode) {
-            return -1;
-        }
-    }
-
+    // Check if there is room in vector. If not, resize.
     if (v->len == v->cap) {
-        size_t newCap;
-
-        // Check if cap is 0, then set it to 1 if it is zero
         if (v->cap == 0) {
-            newCap = 1;
-        } else {
-            newCap = v->cap * CAPMULTIPLIER;
+            v->cap += 1;
         }
 
-        int errorCode = vec_change_cap(v, newCap);
+        int errorCode = vec_change_cap(v, v->cap * CAPMULTIPLIER);
         if (errorCode) {
             return -1;
         }
     }
-
     return 0;
 }
 
