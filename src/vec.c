@@ -23,7 +23,6 @@ static int vec_change_cap(vec *v, size_t new_cap) {
     // Cap size 0 check, empty vector and prevent null pointers
     if (new_cap == 0) {
         v->data = NULL;
-        v->len = 0;
         v->cap = 0;
         return 0;
     }
@@ -110,7 +109,7 @@ vec *vec_new(size_t elem_size) {
     // Assign default values
     vectemp->data = NULL;
     vectemp->len = 0;
-    vectemp->cap = 0; 
+    vectemp->cap = 0;
     vectemp->elem_size = elem_size;
 
     return vectemp;
@@ -258,17 +257,13 @@ int vec_remove(vec *v, size_t i, void *out) {
 
     v->len -= 1;
 
-    // Copy element to pointer, then elements to the right to the left by one
-
-    memmove(source, source + v->elem_size, (v->len - i) * v->elem_size);
-
-    // Don't copy any bytes if out is null
-    if (out == NULL) {
-        return 0;
+    // Copy bytes to out if it not null
+    if (out != NULL) {
+        memcpy(out, source, v->elem_size);
     }
 
-    memcpy(out, source, v->elem_size);
-
+    // Copy element to pointer, then elements to the right to the left by one
+    memmove(source, source + v->elem_size, (v->len - i) * v->elem_size);
     return 0;
 }
 
