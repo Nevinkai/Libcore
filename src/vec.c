@@ -110,7 +110,7 @@ vec *vec_new(size_t elem_size) {
     // Assign default values
     vectemp->data = NULL;
     vectemp->len = 0;
-    vectemp->cap = 0; //
+    vectemp->cap = 0; 
     vectemp->elem_size = elem_size;
 
     return vectemp;
@@ -335,7 +335,7 @@ void vec_sort(vec *v, int (*cmp)(const void *, const void *)) {
 }
 
 long vec_find(const vec *v, const void *elem, int (*cmp)(const void *, const void *)) {
-    char *bytes = v->data;
+    unsigned char *bytes = v->data;
 
     /* index, or -1 */
     for (size_t i = 0; i < v->len; i++) {
