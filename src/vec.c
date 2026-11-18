@@ -70,8 +70,6 @@ static void swap_any(void *a, void *b, size_t size) {
     unsigned char temp[BUF];
     size_t remaining = size;
 
-    // size_t chunkSize = MIN(remaining, BUF);
-
     while (true) {
         // Check which size is smaller, the buffer or the remaining bytes
 
@@ -138,16 +136,10 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
     }
 
     // Assign default values
-    vectemp->data = NULL; // TODO set data
+    vectemp->data = NULL;
     vectemp->len = 0;
     vectemp->cap = cap;
     vectemp->elem_size = elem_size;
-
-    int error_code = vec_ensure_room(vectemp);
-    if (error_code == -1) {
-        free(vectemp);
-        return NULL;
-    }
 
     return vectemp;
 }
