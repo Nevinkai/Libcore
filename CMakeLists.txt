@@ -21,7 +21,8 @@ target_compile_options(core PRIVATE -Wall -Wextra -Wpedantic)
 
 # Tests
 enable_testing()
-add_executable(tests tests/test_main.c)
+add_executable(tests tests/test_main.c
+        include/tests.h)
 target_link_libraries(tests PRIVATE core)
 target_compile_options(tests PRIVATE -Wall -Wextra -Wpedantic)
 add_test(NAME libcore_tests COMMAND tests)

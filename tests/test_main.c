@@ -3,58 +3,62 @@
 //
 #include <stdio.h>
 #include "../include/vec.h"
+#include "../include/tests.h"
+
+// vec_new
+
+static void tests_new_happy_path(void) {
+    vec *v = vec_new(4);
+    CHECK(v);
+    CHECK(v->data == NULL);
+    CHECK(v->len == 0);
+    CHECK(v->cap == 0);
+    CHECK(v->elem_size == 4);
+    vec_free(v);
+}
+
+static void tests_new_elem_size_0(void) {
+    vec *v = vec_new(0);
+    CHECK(!v);
+}
+
+// vec_with_capacity
+
+static void tests_new_capacity_happy(void) {
+    vec *v = vec_with_capacity(4, 10);
+    CHECK(v);
+    CHECK(v->data == NULL);
+    CHECK(v->len == 0);
+    CHECK(v->cap == 10);
+    CHECK(v->elem_size == 4);
+    vec_free(v);
+}
+
+static void tests_new_capacity_elem_size_0(void) {
+    vec *v = vec_with_capacity(0, 10);
+    CHECK(!v);
+}
+
+static void tests_new_capacity_cap_size_0(void) {
+    vec *v = vec_with_capacity(4, 0);
+    CHECK(v);
+    CHECK(v->data == NULL);
+    CHECK(v->len == 0);
+    CHECK(v->cap == 0);
+    CHECK(v->elem_size == 4);
+    vec_free(v);
+}
 
 int main(void) {
-    vec *v = vec_new(sizeof(int));
+    // vec_new
+    RUN_TEST(tests_new_happy_path);
+    RUN_TEST(tests_new_elem_size_0);
 
-    if (!v) {
-        return -1;
-    }
-
-    int a = 1;
-
-    vec_push(v, &a);
-
-    int out = 0;
-
-    vec_pop(v, &out);
-
-    // printf("%d\n", out);
+    // vec_with_capacity
+    RUN_TEST(tests_new_capacity_happy);
+    RUN_TEST(tests_new_capacity_elem_size_0);
+    RUN_TEST(tests_new_capacity_cap_size_0);
 
 
-    for (int i = 1; i < 10; i++) {
-        vec_push(v, &i);
-    }
-
-    int b = 50;
-    vec_insert(v, 2, &b);
-
-
-    // for (int i = 0; i < 10; i++) {
-    //     int error_code = vec_pop(v, &out);
-    //     if (error_code == -1) {
-    //         continue;
-    //     }
-    //     printf("%d\n", out);
-    // }
-
-    int error_code = vec_remove(v, 2, &out);
-    if (error_code == -1) {
-        return -1;
-    }
-    // printf("%d\n", out);
-
-
-    // Test Swap
-    vec_swap(v, 1, 2);
-
-    // Test reserve
-    // printf("%zu\n", v->cap);
-    // printf("%zu\n", v->len);
-    error_code = vec_reserve(v, 31);
-    if (error_code == -1) {
-        return -1;
-    }
-
-    // printf("%zu\n", v->cap);
+    TEST_SUMMARY();
 }
