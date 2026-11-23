@@ -12,6 +12,12 @@ typedef struct {
 } vec;
 
 /* Lifecycle */
+
+/**
+ *
+ * @param elem_size
+ * @return
+ */
 vec *vec_new(size_t elem_size);
 
 vec *vec_with_capacity(size_t elem_size, size_t cap);

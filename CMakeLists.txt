@@ -15,7 +15,8 @@ if (LIBCORE_SANITIZE)
 endif ()
 
 # The library itself: builds libcore.a
-add_library(core STATIC src/vec.c src/str.c)
+add_library(core STATIC src/vec.c src/str.c
+        include/str.h)
 target_include_directories(core PUBLIC include)
 target_compile_options(core PRIVATE -Wall -Wextra -Wpedantic)
 
