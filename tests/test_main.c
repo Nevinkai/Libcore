@@ -51,7 +51,7 @@ static void tests_new_capacity_cap_size_0(void) {
 
 // vec_free
 
-// NONE
+// NONEf
 
 // vec_len
 static void tests_len_happy_path(void) {

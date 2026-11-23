@@ -14,7 +14,7 @@
 #define BUF 256
 
 /* Helper Functions */
-static int vec_allocate_data(vec *v, size_t new_cap) {
+static int vec_resize_buffer(vec *v, size_t new_cap) {
     // Overflow check
     if (new_cap > SIZE_MAX / v->elem_size) {
         return -1;
@@ -22,6 +22,9 @@ static int vec_allocate_data(vec *v, size_t new_cap) {
 
     // Cap size 0 check, empty vector and prevent null pointers
     if (new_cap == 0) {
+        if (v->data != NULL) {
+            free(v->data);
+        }
         v->data = NULL;
         v->cap = 0;
         return 0;
@@ -48,18 +51,18 @@ static int vec_ensure_room(vec *v) {
             new_cap = v->cap * CAPMULTIPLIER;
         }
 
-        int errorCode = vec_allocate_data(v, new_cap);
-        if (errorCode) {
+        int errorCode = vec_resize_buffer(v, new_cap);
+        if (errorCode == -1) {
             return -1;
         }
-
-        // Assign vector cap only after realloc was successful to prevent access to null data
-        v->cap = new_cap;
     }
 
     // Allocate data if null
     if (v->data == NULL) {
-        vec_allocate_data(v, v->cap);
+        int errorCode = vec_resize_buffer(v, v->cap);
+        if (errorCode == -1) {
+            return -1;
+        }
     }
 
     return 0;
@@ -151,6 +154,11 @@ vec *vec_with_capacity(size_t elem_size, size_t cap) {
     vectemp->len = 0;
     vectemp->cap = cap;
     vectemp->elem_size = elem_size;
+
+    int errorCode = vec_resize_buffer(vectemp, vectemp->cap);
+    if (errorCode == -1) {
+        return NULL;
+    }
 
     return vectemp;
 }
@@ -264,6 +272,8 @@ int vec_insert(vec *v, size_t i, const void *elem) {
 int vec_remove(vec *v, size_t i, void *out) {
     assert(i < v->len);
 
+
+    // Copy element to pointer, then elements to the right to the left by one
     unsigned char *bytes = v->data;
     unsigned char *source = bytes + i * v->elem_size;
 
@@ -274,7 +284,6 @@ int vec_remove(vec *v, size_t i, void *out) {
         memcpy(out, source, v->elem_size);
     }
 
-    // Copy element to pointer, then elements to the right to the left by one
     memmove(source, source + v->elem_size, (v->len - i) * v->elem_size);
     return 0;
 }
@@ -309,7 +318,7 @@ int vec_reserve(vec *v, size_t additional) {
     }
 
     // realloc
-    int error_code = vec_allocate_data(v, v->len + additional);
+    int error_code = vec_resize_buffer(v, v->len + additional);
     if (error_code == -1) {
         return -1;
     }
@@ -322,7 +331,7 @@ int vec_shrink_to_fit(vec *v) {
         return 0;
     }
 
-    int error_code = vec_allocate_data(v, v->len);
+    int error_code = vec_resize_buffer(v, v->len);
     if (error_code == -1) {
         return -1;
     }
