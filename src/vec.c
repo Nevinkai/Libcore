@@ -14,7 +14,7 @@
 #define BUF 256
 
 /* Helper Functions */
-static int vec_change_cap(vec *v, size_t new_cap) {
+static int vec_allocate_data(vec *v, size_t new_cap) {
     // Overflow check
     if (new_cap > SIZE_MAX / v->elem_size) {
         return -1;
@@ -41,15 +41,27 @@ static int vec_change_cap(vec *v, size_t new_cap) {
 static int vec_ensure_room(vec *v) {
     // Check if there is room in vector. If not, resize.
     if (v->len == v->cap) {
+        size_t new_cap;
         if (v->cap == 0) {
-            v->cap += 1;
+            new_cap = 1;
+        } else {
+            new_cap = v->cap * CAPMULTIPLIER;
         }
 
-        int errorCode = vec_change_cap(v, v->cap * CAPMULTIPLIER);
+        int errorCode = vec_allocate_data(v, new_cap);
         if (errorCode) {
             return -1;
         }
+
+        // Assign vector cap only after realloc was successful to prevent access to null data
+        v->cap = new_cap;
     }
+
+    // Allocate data if null
+    if (v->data == NULL) {
+        vec_allocate_data(v, v->cap);
+    }
+
     return 0;
 }
 
@@ -297,7 +309,7 @@ int vec_reserve(vec *v, size_t additional) {
     }
 
     // realloc
-    int error_code = vec_change_cap(v, v->len + additional);
+    int error_code = vec_allocate_data(v, v->len + additional);
     if (error_code == -1) {
         return -1;
     }
@@ -310,7 +322,7 @@ int vec_shrink_to_fit(vec *v) {
         return 0;
     }
 
-    int error_code = vec_change_cap(v, v->len);
+    int error_code = vec_allocate_data(v, v->len);
     if (error_code == -1) {
         return -1;
     }

@@ -24,7 +24,7 @@ static void tests_new_elem_size_0(void) {
 
 // vec_with_capacity
 
-static void tests_new_capacity_happy(void) {
+static void tests_new_capacity_happy_path(void) {
     vec *v = vec_with_capacity(4, 10);
     CHECK(v);
     CHECK(v->data == NULL);
@@ -49,13 +49,25 @@ static void tests_new_capacity_cap_size_0(void) {
     vec_free(v);
 }
 
+// vec_free
+
+// NONE
+
+// vec_len
+static void tests_len_happy_path(void) {
+    vec *v = vec_new(4);
+    CHECK(v->len == 0);
+    int a = 5;
+    CHECK(vec_push(v, &a) == 0);
+}
+
 int main(void) {
     // vec_new
     RUN_TEST(tests_new_happy_path);
     RUN_TEST(tests_new_elem_size_0);
 
     // vec_with_capacity
-    RUN_TEST(tests_new_capacity_happy);
+    RUN_TEST(tests_new_capacity_happy_path);
     RUN_TEST(tests_new_capacity_elem_size_0);
     RUN_TEST(tests_new_capacity_cap_size_0);
 
