@@ -182,14 +182,14 @@ int vec_is_empty(const vec *v) {
 void *vec_get(const vec *v, size_t i) {
     assert(i < v->len);
 
-    unsigned char *bytes = v->data; // Convert to unsinged char for proper pointer arithmetic
+    unsigned char *bytes = v->data; // Convert to unsigned char for proper pointer arithmetic
     return &bytes[i * v->elem_size];
 }
 
 void vec_set(vec *v, size_t i, const void *elem) {
     assert(i < v->len);
 
-    unsigned char *bytes = v->data; // Convert to unsinged char for proper pointer arithmetic
+    unsigned char *bytes = v->data; // Convert to unsigned char for proper pointer arithmetic
     memcpy(bytes + i * v->elem_size, elem, v->elem_size);
 }
 
@@ -199,7 +199,7 @@ void *vec_data(const vec *v) {
         return NULL;
     }
 
-    unsigned char *bytes = v->data; // Convert to unsinged char for proper pointer arithmetic
+    unsigned char *bytes = v->data; // Convert to unsigned char for proper pointer arithmetic
 
     return &bytes[0];
 }
